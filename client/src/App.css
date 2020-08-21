@@ -1,0 +1,29 @@
+.entire {
+  margin-top: 50px;
+  height: 100vh;
+  color: white;
+}
+
+input {
+  width: 150px;
+}
+
+.input_fields {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.tableheaders,
+.job {
+  display: flex;
+}
+
+.company_name,
+.job_title,
+.status,
+.date_applied,
+.delete_btn {
+  display: inline-block;
+  text-align: center;
+  width: 18%;
+}
