@@ -4,12 +4,19 @@ function handleSubmit() {
   const job = document.getElementById("job_title_inp").value;
   const status_inp = document.getElementById("status_inp");
   const date_applied_inp = document.getElementById("date_applied_inp").value;
+  const tableheaders = document.querySelector(".tableheaders_container");
 
-  if (company_name === "" || (date_applied_inp !== "" && !validatedate(date_applied_inp))) {
+  if (
+    company_name === "" ||
+    (date_applied_inp !== "" && !validatedate(date_applied_inp))
+  ) {
     if (company_name === "") alert("You must enter a company name");
     if (date_applied_inp !== "" && !validatedate(date_applied_inp))
       alert("Invalid date format.");
   } else {
+    if (!tableheaders.style.display || tableheaders.style.display === "none")
+      tableheaders.style.display = "block";
+
     //main container
     const jobs_div = document.querySelector(".jobs");
 
@@ -28,7 +35,7 @@ function handleSubmit() {
     const job_title_div = document.createElement("div");
     job_title_div.classList.add("job_title");
     const job_title = document.createElement("p");
-    job_title.innerHTML = job;
+    job_title.innerHTML = job ? job : "N/A";
     job_title_div.appendChild(job_title);
 
     //status
@@ -62,13 +69,13 @@ function handleSubmit() {
     const date_applied_div = document.createElement("div");
     const date_applied = document.createElement("p");
     date_applied_div.classList.add("date_applied");
-    date_applied.innerHTML = date_applied_inp;
+    date_applied.innerHTML = date_applied_inp ? date_applied_inp : "N/A";
     date_applied_div.appendChild(date_applied);
 
     //set selected to true in order to save in local storage correctly
     const index = status_inp.selectedIndex;
     select.options[index].setAttribute("selected", true);
-    
+
     //update bg color according to status
     const statusText = select.options[index].text;
     updateStatusColor(job_div, statusText);
@@ -108,10 +115,15 @@ function handleSubmit() {
   }
 }
 
-function handleRemove(btn) {
-  const jobs_div = document.querySelector(".jobs");
-  btn.parentNode.parentNode.remove();
-  localStorage.setItem("jobs", jobs_div.innerHTML);
+function handleRemove(btn, i) {
+  if (btn) {
+    const jobs_div = document.querySelector(".jobs");
+    const jobs = document.querySelector(".jobs");
+    const tableheaders = document.querySelector(".tableheaders_container");
+    if (jobs.childElementCount <= 1) tableheaders.style.display = "none";
+    btn.parentNode.parentNode.remove();
+    localStorage.setItem("jobs", jobs_div.innerHTML);
+  } 
 }
 
 function handleChangeStatus(select) {
@@ -146,7 +158,7 @@ function validatedate(inputText) {
     var lopera2 = opera2.length;
     // Extract the string into month, date and year
     if (lopera1 > 1) {
-      var pdate
+      var pdate;
       pdate = inputText.split("/");
     } else if (lopera2 > 1) {
       pdate = inputText.split("-");
@@ -180,17 +192,15 @@ function validatedate(inputText) {
   return true;
 }
 
-function updateStatusColor(job_div, statusText){
-    job_div.classList.add("alert");
-    if (statusText === "Awaiting Response"){
-      job_div.classList.add("alert-primary");
-    }
-    else if (statusText === "No Response"){
-      job_div.classList.add("alert-danger");
-    }
-    else if (statusText === "Hired"){
-      job_div.classList.add("alert-success");
-    }
+function updateStatusColor(job_div, statusText) {
+  job_div.classList.add("container", "job", "alert");
+  if (statusText === "Awaiting Response") {
+    job_div.classList.add("alert-primary");
+  } else if (statusText === "No Response") {
+    job_div.classList.add("alert-danger");
+  } else if (statusText === "Hired") {
+    job_div.classList.add("alert-success");
+  }
 }
 
 module.exports = {

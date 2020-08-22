@@ -1,5 +1,5 @@
 import React from "react";
-import { handleSubmit } from "./util/methods";
+import { handleSubmit } from "./methods/util";
 
 export default function Input() {
   return (

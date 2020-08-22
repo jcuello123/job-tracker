@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Input from "./components/input";
-import { handleRemove, handleChangeStatus } from "./components/util/methods";
+import { handleRemove, handleChangeStatus } from "./components/methods/util";
 import TableHeaders from "./components/tableheaders";
 
 class App extends React.Component {
@@ -15,22 +15,27 @@ class App extends React.Component {
     //re-add event listeners to remove buttons
     const remove_btns = document.getElementsByClassName("btn-danger");
     if (remove_btns.length > 0) {
-      for (let i = 0; i < remove_btns.length; i++) {
-        remove_btns[i].addEventListener("click", () =>
-          handleRemove(remove_btns[i])
-        );
-      }
+      Array.from(remove_btns).forEach((btn) => 
+        btn.addEventListener("click", () => handleRemove(btn)));
     }
 
     //re-add event listeners to select
-    const selects = document.getElementsByTagName("select");
+    let selects = document.getElementsByTagName("select");
     if (selects.length > 1) {
-      for (let i = 1; i < selects.length; i++) {
-        selects[i].addEventListener("change", () =>
-          handleChangeStatus(selects[i])
-        );
+        selects = Array.from(selects);
+        selects.shift();
+        for (let i = 0; i < selects.length; i++){
+          if (selects[i].id !== 'sort_select'){
+            selects[i].addEventListener("change", () => handleChangeStatus(selects[i]));
+          }
+        }
       }
-    }
+
+
+    const jobs_container = document.querySelector(".jobs");
+    const tableheaders = document.querySelector(".tableheaders_container");
+    tableheaders.style.display =
+      jobs_container.childElementCount === 0 ? "none" : "block";
   }
 
   render() {

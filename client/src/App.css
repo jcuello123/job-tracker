@@ -8,12 +8,21 @@ input {
   width: 150px;
 }
 
+input,
+#status_inp {
+  border-radius: 6px;
+  border: 1px solid white;
+}
+
 .input_fields {
   margin-top: 20px;
   text-align: center;
 }
 
-.tableheaders,
+.tableheaders {
+  display: flex;
+}
+
 .job {
   display: flex;
 }
@@ -22,8 +31,14 @@ input {
 .job_title,
 .status,
 .date_applied,
-.delete_btn {
+.delete_btn,
+.sort {
   display: inline-block;
   text-align: center;
   width: 18%;
+}
+
+.sort p,
+#sort_select{
+  display: inline;
 }
